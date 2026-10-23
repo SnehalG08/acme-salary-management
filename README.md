@@ -30,9 +30,34 @@ The ACME Salary Management System is a web application that helps HR managers ma
 - Angular CLI 18
 
 ## Run the Backend
-1. Configure the MySQL connection in the backend application properties.
-2. Open a terminal in the `backend` directory.
-3. Start the application:
+
+### Database Configuration
+
+1. Ensure MySQL Server is running.
+2. Configure the following environment variables with your local MySQL settings:
+
+   - `DB_URL`: `jdbc:mysql://localhost:3306/salary_management?createDatabaseIfNotExist=true`
+   - `DB_USERNAME`: Your MySQL username
+   - `DB_PASSWORD`: Your MySQL password
+
+   Do not commit actual database credentials to Git.
+
+### Start the Application
+
+1. Open a terminal in the `backend` directory.
+2. Start the Spring Boot application.
+
+   **Git Bash:**
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+
+   **Windows Command Prompt:**
+   ```cmd
+   mvnw.cmd spring-boot:run
+   ```
+
+Backend URL: `http://localhost:8080`
 
 ```bash
 mvn spring-boot:run
