@@ -1,0 +1,289 @@
+
+
+<div class="dashboard">
+  <header class="topbar">
+    <h1>Salary Management</h1>
+    <p>Manage employees and salary information</p>
+  </header>
+
+  <section class="summery-cards">
+    <article class="summery-cards">
+        <p>Total Employees</p>
+        <h2>{{ totalElements | number}}</h2>
+        <span>Across all countries</span>
+    </article>
+
+<article class="summery-cards">
+    <p>Department</p>
+    <h2>6</h2>
+    <span>Across the organization</span>
+</article>
+
+<article class="summery-cards">
+    <p>Countries</p>
+    <h2>5</h2>
+    <span>Golbal workforce</span>
+</article>
+
+<article class="summery-cards">
+    <p>Salary Overview</p>
+    <h2>Multi-currency</h2>
+    <span>Salary by currency</span>
+</article>
+  </section>
+
+<section class="salary-summery-section">
+ <h2>Salary summery by currency</h2>
+ <div class="salary-summery-grid">
+  <article class="salary-summery-card" 
+  *ngFor = "let summery of salarySummery">
+  <h3>{{summery.currency}}</h3>
+  <p>Employees: {{ summery.employeeCount}}</p>
+  <p>Total Salary: {{ summery.totalSalary | number:'1.2-2'}}</p>
+  <p>Average Salary: {{ summery.averageSalary | number:'1.2-2'}}</p>
+  <p>Higest Salary: {{ summery.highestSalary | number:'1.2-2'}}</p>
+  <p>Lowest Salary: {{ summery.lowestSalary | number:'1.2-2'}}</p>
+ </article>
+ </div> 
+ </section>
+ 
+  
+<section class="employee-section">
+  <div class="section-heading">
+    <div>
+      <h2>Employee Directory</h2>
+      
+      <p>Search and manage employee records</p>
+      <button type="button" (click) = "showAddForm = !showAddForm"> 
+        Add Employee - {{showAddForm ? 'Cancel Adding' : '+Add Eeployee'}}</button>
+        
+<form *ngIf="showAddForm" 
+class="employee-form" 
+#employeeForm ="ngForm" 
+(ngSubmit) = "saveEmployee()">
+  <h3>Add New Employee</h3>
+
+  <label>First Name</label>
+  <input type="text" name="firstName" [(ngModel)]="newEmployee.firstName"
+         placeholder="Enter first name" required 
+         />
+
+  <label>Last Name</label>
+  <input type="text" name="lastName" [(ngModel)]="newEmployee.lastName"
+         placeholder="Enter last name" required 
+         />
+
+  <label>Email</label>
+  <input type="email" name="email" [(ngModel)]="newEmployee.email"
+         placeholder="Enter email" required 
+         />
+
+  <label>Country</label>
+  <select name="country" [(ngModel)]="newEmployee.country">
+    <option value="">Select country</option>
+    <option value="India">India</option>
+    <option value="USA">USA</option>
+    <option value="Canada">Canada</option>
+    <option value="UK">UK</option>
+    <option value="Germany">Germany</option>
+  </select>
+
+  <label>Department</label>
+  <select name="department" [(ngModel)]="newEmployee.department">
+    <option value="">Select department</option>
+    <option value="Engineering">Engineering</option>
+    <option value="Marketing">Marketing</option>
+    <option value="Finance">Finance</option>
+    <option value="Human Resources">Human Resources</option>
+    <option value="Sales">Sales</option>
+    <option value="Operations">Operations</option>
+  </select>
+
+  <label>Salary</label>
+  <input type="number" name="salary" [(ngModel)]="newEmployee.salary"
+         placeholder="Enter salary">
+
+  <label>Currency</label>
+  <select  name="currency" [(ngModel)]="newEmployee.currency">
+    <option value="INR">INR</option>
+    <option value="USD">USD</option>
+    <option value="CAD">CAD</option>
+    <option value="GBP">GBP</option>
+    <option value="EUR">EUR</option>
+  </select>
+  
+<div class="form-actions">
+  <button type="submit" [disabled]="employeeForm.invalid">
+    Submit
+  </button>
+
+  <button type="button" class="cancel-button"
+          (click)="cancelAddEmployee()">
+    Cancel
+  </button>
+</div>
+
+</form>
+
+
+<form *ngIf="showEditForm"
+      class="employee-form"
+      #editForm="ngForm"
+      (ngSubmit)="updateEmployee()">
+
+  <h3>Edit Employee</h3>
+
+  <label>First Name</label>
+  <input type="text" name="firstName"
+         [(ngModel)]="newEmployee.firstName" required />
+
+  <label>Last Name</label>
+  <input type="text" name="lastName"
+         [(ngModel)]="newEmployee.lastName" required />
+
+  <label>Email</label>
+  <input type="email" name="email"
+         [(ngModel)]="newEmployee.email" required />
+
+  <label>Country</label>
+  <select name="country"
+          [(ngModel)]="newEmployee.country" required>
+    <option value="">Select country</option>
+    <option value="India">India</option>
+    <option value="USA">USA</option>
+    <option value="Canada">Canada</option>
+    <option value="UK">UK</option>
+    <option value="Germany">Germany</option>
+  </select>
+
+  <label>Department</label>
+  <select name="department"
+          [(ngModel)]="newEmployee.department" required>
+    <option value="">Select department</option>
+    <option value="Engineering">Engineering</option>
+    <option value="Marketing">Marketing</option>
+    <option value="Finance">Finance</option>
+    <option value="Human Resources">Human Resources</option>
+    <option value="Sales">Sales</option>
+    <option value="Operations">Operations</option>
+  </select>
+
+  <label>Salary</label>
+  <input type="number" name="salary"
+         [(ngModel)]="newEmployee.salary" required />
+
+  <label>Currency</label>
+  <select name="currency"
+          [(ngModel)]="newEmployee.currency" required>
+    <option value="INR">INR</option>
+    <option value="USD">USD</option>
+    <option value="CAD">CAD</option>
+    <option value="GBP">GBP</option>
+    <option value="EUR">EUR</option>
+  </select>
+
+  <div class="form-actions">
+    <button type="submit" [disabled]="editForm.invalid">
+      Save Changes
+    </button>
+
+    <button type="button" class="cancel-button"
+            (click)="showEditForm = false; editingEmployeeId = null">
+      Cancel
+    </button>
+  </div>
+</form>
+
+</div>
+</div>
+
+  <div class="filters">
+    <input
+  type="text"
+  placeholder="Search name or email"
+  [(ngModel)]="searchText"
+/>
+
+    <select [(ngModel)] = "selectedCountry">
+      <option value="">All Countries</option>
+      <option>India</option>
+      <option>USA</option>
+      <option>Canada</option>
+      <option>UK</option>
+      <option>Germany</option>
+    </select>
+
+    <select [(ngModel)] = "selectedDepartment">
+      <option value="">All Departments</option>
+      <option>Engineering</option>
+      <option>Marketing</option>
+      <option>Finance</option>
+      <option>Human Resources</option>
+      <option>Sales</option>
+      <option>Operations</option>
+    </select>
+
+    <button class="secondary-button" (click) = "searchEmployees()"> Search </button>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Email</th>
+          <th>Country</th>
+          <th>Department</th>
+          <th>Salary</th>
+          <th>Currency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor = "let employee of employees">
+          <td>{{employee.firstName}} {{employee.lastName}}</td>
+          <td>{{employee.email}}</td>
+          <td>{{employee.country}}</td>
+          <td>{{employee.department}}</td>
+          <td>{{employee.salary | number : '1.2-2'}}</td>
+          <td>{{employee.currency}} 
+            <button type="button" (click) ="editEmployee(employee)">
+             Edit
+          </button>
+        <button type="button" (click) ="deleteEmployee(employee)">
+        Delete
+        </button></td>
+        </tr>
+        <tr *ngIf = "employees.length === 0 && !errorMessage">
+          <td colspan="6" class="empty-message">
+            Loading employee records...
+          </td>
+        </tr>
+
+        <tr *ngIf = "errorMessage">
+         <td colspan="6" class="empty-message">
+          {{errorMessage}}
+         </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="pagination">
+<button
+ (click) = "previousPage()"
+[disabled] = "currentPage === 0">
+Previos
+</button>
+
+<span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+
+<button 
+(click)="nextPage()"
+[disabled]="(currentPage+1) * pageSize >= totalElements">
+Next
+</button>
+
+    </div>
+  </div>
+</section>
+</div>
